@@ -4,21 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity @Data
+@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item extends BaseEntity{
+public class InventoryBody extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private Long itemId;
     private String itemName;
-    private BigDecimal quantity;
     private String itemUnit;
+    private BigDecimal quantity = BigDecimal.ZERO;
 
 }
