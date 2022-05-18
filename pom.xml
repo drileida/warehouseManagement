@@ -69,6 +69,11 @@
 			<version>5.9.0-M1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.8</version>
+		</dependency>
 	</dependencies>
 
 	<build>
