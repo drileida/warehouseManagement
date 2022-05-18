@@ -33,7 +33,12 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Long id) {
         Item item = new Item();
         log.info("Deleting item {}"  , item.getItemName());
-        itemRepository.deleteById(item.getId());
+        itemRepository.deleteById(id);
+    }
+
+    @Override
+    public Item findById(Long id) {
+        return itemRepository.getById(id);
     }
 
 

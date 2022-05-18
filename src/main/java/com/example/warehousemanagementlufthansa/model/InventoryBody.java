@@ -19,6 +19,6 @@ public class InventoryBody extends BaseEntity {
     private Long itemId;
     private String itemName;
     private String itemUnit;
-    private BigDecimal quantity = BigDecimal.ZERO;
+    private BigDecimal quantity ;
 
 }

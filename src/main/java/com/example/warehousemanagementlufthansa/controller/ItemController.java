@@ -5,6 +5,7 @@ import com.example.warehousemanagementlufthansa.model.Item;
 import com.example.warehousemanagementlufthansa.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ROLE_MANAGER')")
 public class ItemController {
     private final ItemService itemService;
 
