@@ -43,30 +43,32 @@ public class WarehouseManagementLufthansaApplication {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_USER"));
 			userService.saveRole(new Role(null, "ROLE_MANAGER"));
+			userService.saveRole(new Role(null, "ROLE_ADMIN"));
+
 
 			userService.saveUser(new User(null, "user", "user","1234" , new ArrayList<>()));
 
 			userService.addRoleToUser("user", "ROLE_USER");
 //			userService.addRoleToUser("user", "ROLE_MANAGER");
 
-			itemService.save(new Item(null , "item1", BigDecimal.TEN, "unit" ));
-			itemService.save(new Item(null , "coffee", BigDecimal.valueOf(233), "gr" ));
-			itemService.save(new Item(null , "water", BigDecimal.valueOf(4555), "l" ));
-			itemService.save(new Item(null , "orange juice", BigDecimal.valueOf(5637), "ml" ));
-			itemService.getAllItems();
-			User user = userService.getUser("user");
-
-			List<InventoryBody> inventoryBodyList = new ArrayList<>();
-			inventoryBodyList.add( new InventoryBody(null ,Long.valueOf(4), "orange juice", "ml" , BigDecimal.valueOf(5637)));
-			inventoryBodyList.add( new InventoryBody(null ,Long.valueOf(5), "coffee","gr", BigDecimal.valueOf(230) ));
-
-			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.APPROVED ,inventoryBodyList));
-			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.CANCELLED ,Collections.emptyList()));
-			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.AWAITING_APPROVAL ,Collections.emptyList()));
-			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.UNDER_DELIVERY ,Collections.emptyList()));
-
-			inventoryHeader.getAll();
-			itemService.getAllItems();
+//			itemService.save(new Item(null , "item1", BigDecimal.TEN, "unit" ));
+//			itemService.save(new Item(null , "coffee", BigDecimal.valueOf(233), "gr" ));
+//			itemService.save(new Item(null , "water", BigDecimal.valueOf(4555), "l" ));
+//			itemService.save(new Item(null , "orange juice", BigDecimal.valueOf(5637), "ml" ));
+//			itemService.getAllItems();
+//			User user = userService.getUser("user");
+//
+//			List<InventoryBody> inventoryBodyList = new ArrayList<>();
+//			inventoryBodyList.add( new InventoryBody(null ,Long.valueOf(4), "orange juice", "ml" , BigDecimal.valueOf(5637)));
+//			inventoryBodyList.add( new InventoryBody(null ,Long.valueOf(5), "coffee","gr", BigDecimal.valueOf(230) ));
+//
+//			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.APPROVED ,inventoryBodyList));
+//			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.CANCELLED ,Collections.emptyList()));
+//			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.AWAITING_APPROVAL ,Collections.emptyList()));
+//			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.UNDER_DELIVERY ,Collections.emptyList()));
+//
+//			inventoryHeader.getAll();
+//			itemService.getAllItems();
 
 //			InventoryHeader inventoryHeader1 = new InventoryHeader(null, user , OrderStatus.AWAITING_APPROVAL , Collections.emptyList());
 //			inventoryHeader.update(Long.valueOf(8), inventoryHeader1);
