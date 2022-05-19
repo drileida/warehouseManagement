@@ -1,21 +1,22 @@
 package com.example.warehousemanagementlufthansa.service;
 
-import com.example.warehousemanagementlufthansa.model.InventoryBody;
-import com.example.warehousemanagementlufthansa.model.InventoryHeader;
-import com.example.warehousemanagementlufthansa.model.Item;
+import com.example.warehousemanagementlufthansa.model.*;
 import com.example.warehousemanagementlufthansa.repository.InventoryBodyRepository;
 import com.example.warehousemanagementlufthansa.repository.ItemRepository;
 import com.example.warehousemanagementlufthansa.repository.OrderRepository;
+import com.example.warehousemanagementlufthansa.repository.TrucksRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
     InventoryBodyRepository inventoryBodyRepository;
     @Autowired
     ItemRepository itemRepository;
+    @Autowired
+    TrucksRepository trucksRepository;
 
     @Override
     public List<InventoryHeader> getAll() {
@@ -57,12 +60,64 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<InventoryBody> getAllItems() {
         log.info("FetchAll items{}" );
-
         return inventoryBodyRepository.findAll();
+    }
+
+    @Override
+    public InventoryHeader findById(Long id) {
+        return orderRepository.getById(id) ;
+    }
+
+    @Override
+    public InventoryHeader update(Long id, InventoryHeader inventoryHeader) throws NotFoundException {
+        log.info("Updated order{}" );
+        InventoryHeader updated = orderRepository.getById(id);
+        updated.setAppUser(inventoryHeader.getAppUser());
+        updated.setStatus(inventoryHeader.getStatus());
+        updated.setInventoryBodyList(inventoryHeader.getInventoryBodyList());
+        updated.setCreatedAt(inventoryHeader.getCreatedAt());
+        updated.setLastModified(inventoryHeader.getLastModified());
+
+        return orderRepository.save(updated);
     }
 
     @Override
     public void delete(Long id) {
         orderRepository.deleteById(id);
     }
+
+    @Override
+    public InventoryHeader cancel(Long id) {
+        InventoryHeader inventoryHeader = orderRepository.getById(id);
+        if(OrderStatus.FULFILLED.equals(true) || OrderStatus.UNDER_DELIVERY.equals(true) || OrderStatus.CANCELLED.equals(true)){
+            log.info("Cannot cancel this order");
+        }
+        inventoryHeader.setStatus(OrderStatus.CANCELLED);
+
+        return orderRepository.save(inventoryHeader);
+    }
+
+    @Override
+    public InventoryHeader submit(Long id) {
+        InventoryHeader inventoryHeader = orderRepository.getById(id);
+        if(OrderStatus.CREATED.equals(true) || OrderStatus.DECLINED.equals(true)){
+            log.info("You submitted this order {}" , inventoryHeader);
+            inventoryHeader.setStatus(OrderStatus.AWAITING_APPROVAL);
+        }else{
+            log.error("Something went wrong!");
+        }
+        return null;
+    }
+
+    @Override
+    public List<InventoryHeader> findAll(Specification<InventoryHeader> spec) {
+        return orderRepository.findAll(spec);
+    }
+
+    @Override
+    public InventoryHeader scheduleDelivery(Date date , Trucks trucks) {
+
+        return null;
+    }
+
 }

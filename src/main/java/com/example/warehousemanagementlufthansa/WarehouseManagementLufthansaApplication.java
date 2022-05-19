@@ -9,10 +9,13 @@ import com.example.warehousemanagementlufthansa.model.OrderStatus;
 import com.example.warehousemanagementlufthansa.service.ItemService;
 import com.example.warehousemanagementlufthansa.service.OrderService;
 import com.example.warehousemanagementlufthansa.service.UserService;
+import com.example.warehousemanagementlufthansa.specification.Spec;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,6 +23,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @SpringBootApplication
 public class WarehouseManagementLufthansaApplication {
@@ -50,12 +55,24 @@ public class WarehouseManagementLufthansaApplication {
 			itemService.save(new Item(null , "orange juice", BigDecimal.valueOf(5637), "ml" ));
 			itemService.getAllItems();
 			User user = userService.getUser("user");
+
 			List<InventoryBody> inventoryBodyList = new ArrayList<>();
 			inventoryBodyList.add( new InventoryBody(null ,Long.valueOf(4), "orange juice", "ml" , BigDecimal.valueOf(5637)));
 			inventoryBodyList.add( new InventoryBody(null ,Long.valueOf(5), "coffee","gr", BigDecimal.valueOf(230) ));
-			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.APPROVED ,inventoryBodyList));
-			inventoryHeader.getAll();
 
+			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.APPROVED ,inventoryBodyList));
+			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.CANCELLED ,Collections.emptyList()));
+			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.AWAITING_APPROVAL ,Collections.emptyList()));
+			inventoryHeader.save(new InventoryHeader(null, user , OrderStatus.UNDER_DELIVERY ,Collections.emptyList()));
+
+			inventoryHeader.getAll();
+			itemService.getAllItems();
+
+//			InventoryHeader inventoryHeader1 = new InventoryHeader(null, user , OrderStatus.AWAITING_APPROVAL , Collections.emptyList());
+//			inventoryHeader.update(Long.valueOf(8), inventoryHeader1);
+//			inventoryHeader.getAll();
+//			inventoryHeader.cancel(Long.valueOf(8));
+//			inventoryHeader.findAll(Spec.searchByWarehouse(OrderStatus.APPROVED.toString()));
 
 
 		};
